@@ -21,6 +21,7 @@ runs:
     - name: Get private action owner
       id: private-action-owner
       run: echo "::set-output name=organization::$({{ inputs.uses }} | awk -F '/' '{print $1}')"
+      shell: bash
 
     - name: Get Token 
       id: github-app
