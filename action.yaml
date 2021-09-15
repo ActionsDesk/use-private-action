@@ -22,7 +22,7 @@ runs:
       id: private-action-owner
       run: |
         rm -rf ./actions/private-action
-        echo "::set-output name=organization::$({{ inputs.uses }} | awk -F '/' '{print $1}')"
+        echo "::set-output name=organization::$(${{ inputs.uses }} | awk -F '/' '{print $1}')"
       shell: bash
 
     - name: Get Token 
