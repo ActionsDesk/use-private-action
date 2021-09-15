@@ -1,0 +1,41 @@
+name: 'Use Private Action'
+description: 'Clones private action into a runner and triggers it'
+
+inputs:
+  uses:
+    description: "owner/repository containing the action"
+    required: true
+  github_app_id:
+    description: "GitHub App Id"
+    required: true
+  github_app_private_key:
+    description: "GitHub App Private Key"
+    required: true
+
+runs:
+  
+  using: "composite"
+  
+  steps:
+
+    - name: Get private action owner
+      id: private-action-owner
+      run: echo "::set-output name=organization::$({{ inputs.uses }} | awk -F '/' '{print $1}')"
+
+    - name: Get Token 
+      id: github-app
+      uses: peter-murray/workflow-application-token-action@v1
+      with:
+        application_id: ${{ inputs.github_app_id }}
+        application_private_key: ${{ inputs.github_app_private_key }}
+        organization: ${{ steps.private-action-owner.outputs.organization }}
+
+    - name: Check-out the simple private action
+      uses: actions/checkout@v2
+      with:
+        repository: ${{ inputs.uses }}
+        path: actions/${{ inputs.uses }}
+        token: ${{ steps.github-app.outputs.token }}
+
+    - name: Run private action
+      uses: ./actions/${{ inputs.uses }}
