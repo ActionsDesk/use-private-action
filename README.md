@@ -16,6 +16,6 @@ jobs:
       - uses: Link-/use-private-action@main
         with:
           uses: ORG/PRIVATE_ACTION_NAME@v1
-          github_app_id: ${{secrets.GITHUB_APP_ID}}
-          github_app_private_key: ${{secrets.GITHUB_APP_PRIVATE_KEY}}
+          github_app_id: ${{secrets.APP_ID}}
+          github_app_private_key: ${{secrets.APP_PRIVATE_KEY}}
 ```
