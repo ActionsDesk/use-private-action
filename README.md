@@ -13,7 +13,7 @@ jobs:
     
     steps:  
       - uses: actions/checkout@v2
-      - uses: Link-/use-private-action@main
+      - uses: ActionsDesk/use-private-action@main
         with:
           uses: ORG/PRIVATE_ACTION_NAME@v1
           github_app_id: ${{secrets.APP_ID}}
