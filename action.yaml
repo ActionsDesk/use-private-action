@@ -46,6 +46,7 @@ runs:
         ref: ${{ steps.private-action-owner.outputs.branch }}
         path: actions/private-action
         token: ${{ steps.github-app.outputs.token }}
+        persist-credentials: false
 
     - name: Run private action
       uses: ./actions/private-action
