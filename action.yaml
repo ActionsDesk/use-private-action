@@ -18,9 +18,11 @@ runs:
   
   steps:
 
-    - name: Get private action owner
+    - name: Cleanup & get private action owner
       id: private-action-owner
-      run: echo "::set-output name=organization::$({{ inputs.uses }} | awk -F '/' '{print $1}')"
+      run: |
+        rm -rf ./actions/private-action
+        echo "::set-output name=organization::$({{ inputs.uses }} | awk -F '/' '{print $1}')"
       shell: bash
 
     - name: Get Token 
@@ -35,8 +37,8 @@ runs:
       uses: actions/checkout@v2
       with:
         repository: ${{ inputs.uses }}
-        path: actions/${{ inputs.uses }}
+        path: actions/private-action
         token: ${{ steps.github-app.outputs.token }}
 
     - name: Run private action
-      uses: ./actions/${{ inputs.uses }}
+      uses: ./actions/private-action
