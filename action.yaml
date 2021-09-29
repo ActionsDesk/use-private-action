@@ -38,6 +38,7 @@ runs:
         EOF
         export INPUT_REGISTRY_USERNAME="TESTINGUSER"
         export INPUT_REGISTRY_PASSWORD="TESTINGPASS"
+        export -p
       shell: bash
 
     - name: Get Token 
