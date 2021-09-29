@@ -33,12 +33,11 @@ runs:
         # Returns the repo name only
         echo "::set-output name=branch::$(echo ${{ inputs.uses }} | awk -F '/' '{print $2}' | awk -F '@' '{print $2}')"
         # Return list of inputs
-        cat <<EOF
-          ${{ inputs.with }}
+        INPUTS=$(cat <<EOF
+        ${{ inputs.with }}
         EOF
-        export INPUT_REGISTRY_USERNAME="TESTINGUSER"
-        export INPUT_REGISTRY_PASSWORD="TESTINGPASS"
-        export -p
+        )
+        echo $INPUTS
       shell: bash
 
     - name: Get Token 
