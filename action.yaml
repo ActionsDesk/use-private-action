@@ -39,9 +39,10 @@ runs:
       id: parse-additional-parameters
       run: |
         # Parse parameters passed in with
-        read -d "" INPUT_VARIABLES <<EOF
-        ${{ inputs.with }}
-        EOF
+        echo 'HELLOO!!'
+        # read -d "" INPUT_VARIABLES <<EOF
+        # ${{ inputs.with }}
+        # EOF
         # if [ -z "$INPUT_VARIABLES" ]; then
         #     echo "No additional parameters to process"
         #     exit 0
