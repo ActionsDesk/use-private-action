@@ -1,8 +1,7 @@
 #!/usr/bin/env bash
-read -d '' INPUT_VARIABLES <<EOF
+read -d "" INPUT_VARIABLES <<EOF
   registry_username: bogus user
-  registry_password: PASSWORD
-  
+  registry_password: PASSWORD  
 EOF
 # Split $INPUT by newline
 readarray -t INPUT_ARRAY <<<"${INPUT_VARIABLES}"
