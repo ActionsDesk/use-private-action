@@ -32,12 +32,21 @@ runs:
         echo "::set-output name=organization::$(echo ${{ inputs.uses }} | awk -F '/' '{print $1}')"
         # Returns the repo name only
         echo "::set-output name=branch::$(echo ${{ inputs.uses }} | awk -F '/' '{print $2}' | awk -F '@' '{print $2}')"
-        # Return list of inputs
-        INPUTS=$(cat <<EOF
+        # Parse inputs
+        read -d '' INPUT_VARIABLES <<EOF
         ${{ inputs.with }}
         EOF
-        )
-        echo $INPUTS
+        # Split $INPUT by newline
+        readarray -t INPUT_ARRAY <<<"${INPUT_VARIABLES}"
+        # Print the array
+        for i in "${INPUT_ARRAY[@]}"; do
+          # split the variable $i by colon
+          IFS=":" read -ra KEY_VALUES <<< "${i// /}"
+          # Setting the env variables
+          echo "INPUT_${KEY_VALUES[0]^^}"="${KEY_VALUES[1]}"
+          # uppercase the variable name
+          export "INPUT_${KEY_VALUES[0]^^}"="${KEY_VALUES[1]}"
+        done
       shell: bash
 
     - name: Get Token 
