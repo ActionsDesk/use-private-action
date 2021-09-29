@@ -20,12 +20,26 @@ runs:
   using: "composite"
   
   steps:
-
     - name: Cleanup & get private action owner
-      id: private-action-owner
       run: |
         # Cleanup existing actions in this directory
         rm -rf ./actions/private-action
+      shell: bash
+    
+    - name: Parse inputs
+      id: parse-inputs
+      run: |
+        # Returns the owner/repo
+        echo "::set-output name=action_repo::$(echo ${{ inputs.uses }} | awk -F '@' '{print $1}')"
+        # Returns the owner (i.e. org name only)
+        echo "::set-output name=organization::$(echo ${{ inputs.uses }} | awk -F '/' '{print $1}')"
+        # Returns the repo name only
+        echo "::set-output name=branch::$(echo ${{ inputs.uses }} | awk -F '/' '{print $2}' | awk -F '@' '{print $2}')"
+      shell: bash
+
+    - name: Parse additional parameters
+      id: parse-additional-parameters
+      run: |
         # Parse inputs
         read -d '' INPUT_VARIABLES <<EOF
         ${{ inputs.with }}
@@ -39,12 +53,6 @@ runs:
           # uppercase the variable name and export the new env variables
           export "INPUT_${KEY_VALUES[0]^^}"="${KEY_VALUES[1]}"
         done
-        # Returns the owner/repo
-        echo "::set-output name=action_repo::$(echo ${{ inputs.uses }} | awk -F '@' '{print $1}')"
-        # Returns the owner (i.e. org name only)
-        echo "::set-output name=organization::$(echo ${{ inputs.uses }} | awk -F '/' '{print $1}')"
-        # Returns the repo name only
-        echo "::set-output name=branch::$(echo ${{ inputs.uses }} | awk -F '/' '{print $2}' | awk -F '@' '{print $2}')"
       shell: bash
 
     - name: Get Token
@@ -53,13 +61,13 @@ runs:
       with:
         application_id: ${{ inputs.github_app_id }}
         application_private_key: ${{ inputs.github_app_private_key }}
-        organization: ${{ steps.private-action-owner.outputs.organization }}
+        organization: ${{ steps.parse-inputs.outputs.organization }}
 
     - name: Check-out the simple private action
       uses: actions/checkout@v2
       with:
-        repository: ${{ steps.private-action-owner.outputs.action_repo }}
-        ref: ${{ steps.private-action-owner.outputs.branch }}
+        repository: ${{ steps.parse-inputs.outputs.action_repo }}
+        ref: ${{ steps.parse-inputs.outputs.branch }}
         path: actions/private-action
         token: ${{ steps.github-app.outputs.token }}
         persist-credentials: false
