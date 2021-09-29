@@ -11,6 +11,9 @@ inputs:
   github_app_private_key:
     description: "GitHub App Private Key"
     required: true
+  with:
+    description: "List of key/value inputs"
+    required: false
 
 runs:
   
@@ -29,6 +32,8 @@ runs:
         echo "::set-output name=organization::$(echo ${{ inputs.uses }} | awk -F '/' '{print $1}')"
         # Returns the repo name only
         echo "::set-output name=branch::$(echo ${{ inputs.uses }} | awk -F '/' '{print $2}' | awk -F '@' '{print $2}')"
+        # Return list of inputs
+        echo ${{ inputs.with }}
       shell: bash
 
     - name: Get Token 
