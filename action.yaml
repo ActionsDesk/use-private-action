@@ -33,7 +33,11 @@ runs:
         # Returns the repo name only
         echo "::set-output name=branch::$(echo ${{ inputs.uses }} | awk -F '/' '{print $2}' | awk -F '@' '{print $2}')"
         # Return list of inputs
-        echo ${{ inputs.with }}
+        cat <<EOF
+          ${{ inputs.with }}
+        EOF
+        export INPUT_REGISTRY_USERNAME="TESTINGUSER"
+        export INPUT_REGISTRY_PASSWORD="TESTINGPASS"
       shell: bash
 
     - name: Get Token 
@@ -55,6 +59,3 @@ runs:
 
     - name: Run private action
       uses: ./actions/private-action
-      env:
-        "INPUT_${{ steps.private-action-owner.outputs.organization }}": "ABC"
-        "INPUT_${{ steps.private-action-owner.outputs.action_repo }}": "XYZ"
