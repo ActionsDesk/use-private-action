@@ -12,8 +12,7 @@ for i in "${INPUT_ARRAY[@]}"; do
   # split the variable $i by colon
   IFS=":" read -ra KEY_VALUES <<< "${i// /}"
   # Print the variable name and value
-  echo "key: ${KEY_VALUES[0]}"
-  echo "value: ${KEY_VALUES[1]}"
+  echo "INPUT_${KEY_VALUES[0]^^}"="${KEY_VALUES[1]}"
   # uppercase the variable name
   export "INPUT_${KEY_VALUES[0]^^}"="${KEY_VALUES[1]}"
 done

@@ -42,14 +42,12 @@ runs:
         for i in "${INPUT_ARRAY[@]}"; do
           # split the variable $i by colon
           IFS=":" read -ra KEY_VALUES <<< "${i// /}"
-          # Setting the env variables
-          echo "INPUT_${KEY_VALUES[0]^^}"="${KEY_VALUES[1]}"
-          # uppercase the variable name
+          # uppercase the variable name and export the new env variables
           export "INPUT_${KEY_VALUES[0]^^}"="${KEY_VALUES[1]}"
         done
       shell: bash
 
-    - name: Get Token 
+    - name: Get Token
       id: github-app
       uses: peter-murray/workflow-application-token-action@v1
       with:
