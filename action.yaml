@@ -42,11 +42,15 @@ runs:
         read -d "" INPUT_VARIABLES <<EOF
         ${{ inputs.with }}
         EOF
-        readarray -t INPUT_ARRAY <<<"${INPUT_VARIABLES}"
-        for i in "${INPUT_ARRAY[@]}"; do
-          IFS=":" read -ra KEY_VALUES <<< "${i// /}"
-          export "INPUT_${KEY_VALUES[0]^^}"="${KEY_VALUES[1]}"
-        done
+        # if [ -z "$INPUT_VARIABLES" ]; then
+        #     echo "No additional parameters to process"
+        #     exit 0
+        # fi
+        # readarray -t INPUT_ARRAY <<<"${INPUT_VARIABLES}"
+        # for i in "${INPUT_ARRAY[@]}"; do
+        #   IFS=":" read -ra KEY_VALUES <<< "${i// /}"
+        #   export "INPUT_${KEY_VALUES[0]^^}"="${KEY_VALUES[1]}"
+        # done
       shell: bash
 
     - name: Get Token

@@ -1,8 +1,11 @@
 #!/usr/bin/env bash
 read -d "" INPUT_VARIABLES <<EOF
-  registry_username: bogus user
-  registry_password: PASSWORD  
 EOF
+# Check if INPUT_VARIABLES is empty
+if [ -z "$INPUT_VARIABLES" ]; then
+    echo "INPUT_VARIABLES is empty"
+    exit 0
+fi
 # Split $INPUT by newline
 readarray -t INPUT_ARRAY <<<"${INPUT_VARIABLES}"
 # Print the array
