@@ -11,7 +11,7 @@ inputs:
   github_app_private_key:
     description: "GitHub App Private Key"
     required: true
-  vars:
+  with:
     description: "List of key/value inputs"
     required: false
 
@@ -34,7 +34,7 @@ runs:
         echo "::set-output name=branch::$(echo ${{ inputs.uses }} | awk -F '/' '{print $2}' | awk -F '@' '{print $2}')"
         # Parse inputs
         read -d '' INPUT_VARIABLES <<EOF
-        ${{ inputs.vars }}
+        ${{ inputs.with }}
         EOF
         # Split $INPUT by newline
         readarray -t INPUT_ARRAY <<<"${INPUT_VARIABLES}"
