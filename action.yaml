@@ -40,18 +40,18 @@ runs:
       run: |
         # Parse parameters passed in with
         echo 'HELLOO!!'
-        # read -d "" INPUT_VARIABLES <<EOF
-        # ${{ inputs.with }}
-        # EOF
-        # if [ -z "$INPUT_VARIABLES" ]; then
-        #     echo "No additional parameters to process"
-        #     exit 0
-        # fi
-        # readarray -t INPUT_ARRAY <<<"${INPUT_VARIABLES}"
-        # for i in "${INPUT_ARRAY[@]}"; do
-        #   IFS=":" read -ra KEY_VALUES <<< "${i// /}"
-        #   export "INPUT_${KEY_VALUES[0]^^}"="${KEY_VALUES[1]}"
-        # done
+        read -d "" INPUT_VARIABLES <<EOF
+          ${{ inputs.with }}
+        EOF
+        if [ -z "$INPUT_VARIABLES" ]; then
+            echo "No additional parameters to process"
+            exit 0
+        fi
+        readarray -t INPUT_ARRAY <<<"${INPUT_VARIABLES}"
+        for i in "${INPUT_ARRAY[@]}"; do
+          IFS=":" read -ra KEY_VALUES <<< "${i// /}"
+          export "INPUT_${KEY_VALUES[0]^^}"="${KEY_VALUES[1]}"
+        done
       shell: bash
 
     - name: Get Token
