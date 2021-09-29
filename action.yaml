@@ -51,7 +51,8 @@ runs:
         readarray -t INPUT_ARRAY <<<"${INPUT_VARIABLES}"
         for i in "${INPUT_ARRAY[@]}"; do
             IFS=":" read -ra KEY_VALUES <<< "${i// /}"
-            export "INPUT_${KEY_VALUES[0]^^}"="${KEY_VALUES[1]}"
+            echo "INPUT_${KEY_VALUES[0]^^}"="${KEY_VALUES[1]}"
+            # export "INPUT_${KEY_VALUES[0]^^}"="${KEY_VALUES[1]}"
         done
       shell: bash
 
