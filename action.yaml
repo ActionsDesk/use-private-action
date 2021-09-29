@@ -26,12 +26,6 @@ runs:
       run: |
         # Cleanup existing actions in this directory
         rm -rf ./actions/private-action
-        # Returns the owner/repo
-        echo "::set-output name=action_repo::$(echo ${{ inputs.uses }} | awk -F '@' '{print $1}')"
-        # Returns the owner (i.e. org name only)
-        echo "::set-output name=organization::$(echo ${{ inputs.uses }} | awk -F '/' '{print $1}')"
-        # Returns the repo name only
-        echo "::set-output name=branch::$(echo ${{ inputs.uses }} | awk -F '/' '{print $2}' | awk -F '@' '{print $2}')"
         # Parse inputs
         read -d '' INPUT_VARIABLES <<EOF
         ${{ inputs.with }}
@@ -45,6 +39,12 @@ runs:
           # uppercase the variable name and export the new env variables
           export "INPUT_${KEY_VALUES[0]^^}"="${KEY_VALUES[1]}"
         done
+        # Returns the owner/repo
+        echo "::set-output name=action_repo::$(echo ${{ inputs.uses }} | awk -F '@' '{print $1}')"
+        # Returns the owner (i.e. org name only)
+        echo "::set-output name=organization::$(echo ${{ inputs.uses }} | awk -F '/' '{print $1}')"
+        # Returns the repo name only
+        echo "::set-output name=branch::$(echo ${{ inputs.uses }} | awk -F '/' '{print $2}' | awk -F '@' '{print $2}')"
       shell: bash
 
     - name: Get Token
